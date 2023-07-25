@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+set -x
 
 # the first time run:
 #helm dependency build
