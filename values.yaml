@@ -1054,7 +1054,7 @@ mongodb:
   replicaSetName: rs0
   # Number of MongoDB replicas to deploy.
   # Ignored when mongodb.architecture=standalone
-  replicaCount: 3
+  replicaCount: 1
   auth:
     enabled: true
     # NB! It's highly recommended to change ALL insecure auth defaults!
