@@ -46,6 +46,10 @@ spec:
       # Sidecar container for generating .htpasswd with st2 username & password pair and sharing produced file with the main st2auth container
       - name: generate-htpasswd
         image: '{{ template "stackstorm-ha.imageRepository" . }}/st2auth:{{ tpl (.Values.st2auth.image.tag | default .Values.image.tag) . }}'
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "100Mi"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- with .Values.securityContext }}
         securityContext: {{- toYaml . | nindent 10 }}
@@ -1573,6 +1577,10 @@ spec:
       # Sidecar container for generating st2client config with st2 username & password pair and sharing produced file with the main container
       - name: generate-st2client-config
         image: '{{ template "stackstorm-ha.imageRepository" . }}/st2actionrunner:{{ tpl (.Values.st2client.image.tag | default (.Values.st2actionrunner.image.tag | default .Values.image.tag)) . }}'
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "100Mi"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{- with .Values.securityContext }}
         securityContext: {{- toYaml . | nindent 10 }}

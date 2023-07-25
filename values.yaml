@@ -337,6 +337,7 @@ st2web:
       cpu: "50m"
     limits:
       memory: "100Mi"
+      cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -390,6 +391,9 @@ st2auth:
     requests:
       memory: "85Mi"
       cpu: "50m"
+    limits:
+      memory: "200Mi"
+      cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -429,6 +433,9 @@ st2api:
     requests:
       memory: "150Mi"
       cpu: "25m"
+    limits:
+      memory: "300Mi"
+      cpu: "50m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -468,6 +475,9 @@ st2stream:
     requests:
       memory: "100Mi"
       cpu: "50m"
+    limits:
+      memory: "200Mi"
+      cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -507,6 +517,9 @@ st2rulesengine:
     requests:
       memory: "75Mi"
       cpu: "25m"
+    limits:
+      memory: "150Mi"
+      cpu: "50m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -537,6 +550,9 @@ st2timersengine:
     requests:
       memory: "75Mi"
       cpu: "10m"
+    limits:
+      memory: "150Mi"
+      cpu: "20m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -568,6 +584,9 @@ st2workflowengine:
     requests:
       memory: "200Mi"
       cpu: "100m"
+    limits:
+      memory: "400Mi"
+      cpu: "200m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -599,6 +618,9 @@ st2scheduler:
     requests:
       memory: "75Mi"
       cpu: "50m"
+    limits:
+      memory: "150Mi"
+      cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -630,6 +652,9 @@ st2notifier:
     requests:
       memory: "75Mi"
       cpu: "50m"
+    limits:
+      memory: "150Mi"
+      cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -662,6 +687,9 @@ st2actionrunner:
     requests:
       memory: "200Mi"
       cpu: "75m"
+    limits:
+      memory: "400Mi"
+      cpu: "150m"
   # Override default image settings
   image: {}
     # Uncomment the following block to use your own at2actionrunner docker image
@@ -758,6 +786,9 @@ st2sensorcontainer:
     requests:
       memory: "100Mi"
       cpu: "50m"
+    limits:
+      memory: "200Mi"
+      cpu: "100m"
   # Override default image settings (for now, only tag can be overridden)
   image: {}
     ## Note that Helm templating is supported in this block!
@@ -829,6 +860,9 @@ st2client:
     requests:
       memory: "5Mi"
       cpu: "5m"
+    limits:
+      memory: "20Mi"
+      cpu: "20m"
 
 # https://docs.stackstorm.com/reference/ha.html#st2garbagecollector
 # Optional service that cleans up old executions and other operations data based on setup configurations.
@@ -840,6 +874,9 @@ st2garbagecollector:
     requests:
       memory: "80Mi"
       cpu: "10m"
+    limits:
+      memory: "160Mi"
+      cpu: "20m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -895,6 +932,9 @@ st2chatops:
     requests:
       memory: "50Mi"
       cpu: "5m"
+    limits:
+      memory: "100Mi"
+      cpu: "20m"
   annotations: {}
   # Advanced use-cases only. If defined, this hubot-scripts volume gets mounted to: /opt/stackstorm/chatops/scripts
   # This volume (using any k8s storage solution, including configmap) allows for hubot customization.
@@ -932,6 +972,10 @@ jobs:
   image: {}
     ## Note that Helm templating is supported in this block!
     #tag: "{{ .Values.image.tag }}"
+  resources:
+    limits:
+      memory: "100Mi"
+      cpu: "100m"
   # If defined, this preRegisterContentCommand runs in an initContainer on the st2-register-content Job.
   # The initContainer also uses the st2actionrunner image but runs this command instead of its entrypoint.
   preRegisterContentCommand: []
@@ -1028,7 +1072,10 @@ mongodb:
     # Whether to enable the arbiter
   arbiter:
     enabled: false
-  resources: {}
+  resources:
+    limits:
+      memory: "100Mi"
+      cpu: "100m"
 
 ##
 ## RabbitMQ configuration (3rd party chart dependency)
@@ -1070,7 +1117,10 @@ rabbitmq:
   # We recommend to set the memory limit for RabbitMQ-HA Pods in production deployments.
   # Make sure to also change the rabbitmqMemoryHighWatermark following the formula:
   # rabbitmqMemoryHighWatermark = 0.4 * resources.limits.memory
-  resources: {}
+  resources:
+    limits:
+      memory: "100Mi"
+      cpu: "100m"
   # number of replicas in the rabbit cluster
   replicaCount: 3
   # As RabbitMQ enabled prometheus operator monitoring by default, disable it for non-prometheus users
