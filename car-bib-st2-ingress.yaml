@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: car-bib-st2-ingress
+  namespace: car-bib
+spec:
+  ingressClassName: ingress-car
+  rules:
+  - host: st2web.car.eks-sandpit.na.eafcore.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: bib-st2-st2web
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - st2web.car.eks-sandpit.na.eafcore.com
+    secretName: car-bib-st2-tls
