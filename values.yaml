@@ -347,7 +347,7 @@ st2web:
   # ingress:
   service:
     # type can be one of "ClusterIP", "NodePort", "LoadBalancer" or "ExternalName"
-    type: "NodePort"
+    type: "ClusterIP"
     # The hostname associated with st2web service (externalName, added to external DNS, etc.)
     hostname: ""
     # For more information regarding annotations, see
@@ -386,7 +386,7 @@ st2web:
 # https://docs.stackstorm.com/reference/ha.html#st2auth
 # Multiple st2auth processes can be behind a load balancer in an active-active configuration.
 st2auth:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "85Mi"
@@ -428,14 +428,14 @@ st2auth:
 # https://docs.stackstorm.com/reference/ha.html#st2api
 # Multiple st2api process can be behind a load balancer in an active-active configuration.
 st2api:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "150Mi"
       cpu: "25m"
     limits:
-      memory: "300Mi"
-      cpu: "50m"
+      memory: "1000Mi"
+      cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
   image: {}
@@ -470,7 +470,7 @@ st2api:
 # https://docs.stackstorm.com/reference/ha.html#st2stream
 # Multiple st2stream process can be behind a load balancer in an active-active configuration.
 st2stream:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "100Mi"
@@ -512,7 +512,7 @@ st2stream:
 # https://docs.stackstorm.com/reference/ha.html#st2rulesengine
 # Multiple st2rulesengine processes can run in active-active with only connections to MongoDB and RabbitMQ. All these will share the TriggerInstance load and naturally pick up more work if one or more of the processes becomes unavailable.
 st2rulesengine:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "75Mi"
@@ -579,7 +579,7 @@ st2timersengine:
 # https://docs.stackstorm.com/reference/ha.html#st2workflowengine
 # Multiple st2workflowengine processes can run in active-active mode and will share the load and pick up more work if one or more of the processes become available.
 st2workflowengine:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "200Mi"
@@ -613,13 +613,13 @@ st2workflowengine:
 # https://docs.stackstorm.com/reference/ha.html#st2scheduler
 # TODO: Description TBD
 st2scheduler:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "75Mi"
       cpu: "50m"
     limits:
-      memory: "150Mi"
+      memory: "1000Mi"
       cpu: "100m"
   annotations: {}
   # Override default image settings (for now, only tag can be overridden)
@@ -647,7 +647,7 @@ st2scheduler:
 # https://docs.stackstorm.com/reference/ha.html#st2notifier
 # st2notifier runs in active-active mode and requires for that coordination backend like Redis or Zookeeper
 st2notifier:
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: "75Mi"
@@ -682,7 +682,7 @@ st2notifier:
 # Multiple st2actionrunner processes can run in active-active with only connections to MongoDB and RabbitMQ. Work gets naturally
 # distributed across runners via RabbitMQ. Adding more st2actionrunner processes increases the ability of StackStorm to execute actions.
 st2actionrunner:
-  replicas: 5
+  replicas: 2
   resources:
     requests:
       memory: "200Mi"
@@ -1074,7 +1074,7 @@ mongodb:
     enabled: false
   resources:
     limits:
-      memory: "100Mi"
+      memory: "512Mi"
       cpu: "100m"
 
 ##
@@ -1119,10 +1119,10 @@ rabbitmq:
   # rabbitmqMemoryHighWatermark = 0.4 * resources.limits.memory
   resources:
     limits:
-      memory: "100Mi"
+      memory: "512Mi"
       cpu: "100m"
   # number of replicas in the rabbit cluster
-  replicaCount: 3
+  replicaCount: 1
   # As RabbitMQ enabled prometheus operator monitoring by default, disable it for non-prometheus users
   metrics:
     enabled: false
@@ -1137,10 +1137,19 @@ redis:
   # Change to `false` to disable in-cluster redis deployment.
   # Specify your external [coordination] connection parameters under st2.config
   enabled: true
+  
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: "100m"
   # By default the cluster is enabled for the subchart.
   # We just need replica count here to ensure it is HA
   cluster:
-    slaveCount: 3
+    slaveCount: 1
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "100m"
   # Sentinel settings. Sentinel is enabled for better resiliency.
   # This is highly recommended as per tooz library documentation.
   # Hence, the chart requires the setting.
@@ -1155,6 +1164,10 @@ redis:
     # If disabled each sentinel will generate a random id at startup
     # If enabled, each replicas will have a constant ID on each start-up
     staticID: true
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "100m"
   # if redis.usePassword is true, you can set the password here
   # password: mysupersecretpassword
   networkPolicy:
