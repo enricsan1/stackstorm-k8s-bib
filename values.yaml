@@ -61,7 +61,7 @@ st2:
   # If set, st2.password always overrides any existing password.
   # If not set, the password is auto-generated on install and preserved across upgrades.
   # Disabled if st2.existingAuthSecret is set
-  #password: Ch@ngeMe
+  password: Ch@ngeMe
   # Name of existing ST2 Auth secret, disables creation of this secret
   # existingAuthSecret: ""
   # Name of existing ST2 datastore secret, disables creation of this secret
@@ -861,8 +861,8 @@ st2client:
       memory: "5Mi"
       cpu: "5m"
     limits:
-      memory: "20Mi"
-      cpu: "20m"
+      memory: "100Mi"
+      cpu: "50m"
 
 # https://docs.stackstorm.com/reference/ha.html#st2garbagecollector
 # Optional service that cleans up old executions and other operations data based on setup configurations.
@@ -1119,8 +1119,8 @@ rabbitmq:
   # rabbitmqMemoryHighWatermark = 0.4 * resources.limits.memory
   resources:
     limits:
-      memory: "512Mi"
-      cpu: "100m"
+      memory: "800Mi"
+      cpu: "200m"
   # number of replicas in the rabbit cluster
   replicaCount: 1
   # As RabbitMQ enabled prometheus operator monitoring by default, disable it for non-prometheus users

@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: ingress-car
   rules:
-  - host: st2web.car.eks-sandpit.na.eafcore.com
+  - host: st2.car.eks-sandpit.na.eafcore.com
     http:
       paths:
       - backend:
@@ -20,5 +20,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - st2web.car.eks-sandpit.na.eafcore.com
+    - st2.car.eks-sandpit.na.eafcore.com
     secretName: car-bib-st2-tls
